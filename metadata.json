@@ -1,0 +1,6 @@
+{
+  "name": "DocuCpp: High School Friendly Doxygen Generator",
+  "description": "Generate clear, student-friendly C++ code comments and Doxygen documentation using Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
