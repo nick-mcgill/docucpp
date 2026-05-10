@@ -172,6 +172,8 @@ export default function App() {
         (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_GEMINI_API_KEY) || 
         (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY);
 
+      console.log("Docs Gen - Check: ", { hasViteKey: !!(import.meta.env && import.meta.env.VITE_GEMINI_API_KEY), hasProcessKey: !!(process.env && process.env.GEMINI_API_KEY), isKeyPresent: !!apiKey, url: window.location.href });
+
       if (!apiKey) {
         throw new Error("API key is missing. Please set VITE_GEMINI_API_KEY in your environment.");
       }
@@ -205,9 +207,17 @@ ${code}`
       const result = response.text || '';
       const cleanedResult = result.replace(/^```(cpp|c\+\+)?\n/, '').replace(/\n```$/, '');
       setOutputState(cleanedResult);
-    } catch (err) {
-      console.error(err);
-      setError('Failed to generate documentation. Please check your API key and try again.');
+    } catch (err: any) {
+      console.error("Docs Gen caught error:", err);
+      let errorMessage = 'Failed to generate documentation. Please check your API key and try again.';
+      if (err?.message) {
+        if (err.message.includes('403') || err.message.toLowerCase().includes('permission') || err.message.toLowerCase().includes('referer') || err.message.includes('API_KEY_INVALID')) {
+          errorMessage = `API Key Error: ${err.message}. If using GitHub Pages, ensure your HTTP Referrer restriction allows "https://nick-mcgill.github.io/*". If testing in AI Studio preview, the browser referrer won't match your GitHub rule.`;
+        } else {
+          errorMessage = `Error: ${err.message}`;
+        }
+      }
+      setError(errorMessage);
     } finally {
       setLoadingState(false);
     }
