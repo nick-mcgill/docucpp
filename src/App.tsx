@@ -167,7 +167,16 @@ export default function App() {
     setLoadingState(true);
     setError(null);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      // Support both AI Studio environment (process.env) and standard Vite (import.meta.env)
+      const apiKey = 
+        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_GEMINI_API_KEY) || 
+        (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY);
+
+      if (!apiKey) {
+        throw new Error("API key is missing. Please set VITE_GEMINI_API_KEY in your environment.");
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: MODEL_NAME,
         contents: [
@@ -338,6 +347,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
+        env:
+          VITE_GEMINI_API_KEY: "AIzaSyCgfyuctCJpYtZscG14V6TJXuu36mR7ju4"
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -835,8 +846,27 @@ jobs:
                         Vite Configuration
                       </h3>
                       <p className="text-xs opacity-70">
-                        If you are deploying to a non-custom domain (e.g., <code className="bg-black/5 px-1">user.github.io/repo/</code>), ensure you set the <code className="bg-black/5 px-1">base</code> option in your <code className="bg-black/5 px-1">vite.config.ts</code> so assets load correctly.
+                        To fix the "white page" issue, you need to set the base path. Open your <code className="bg-black/5 px-1">vite.config.ts</code> and add <code className="bg-black/5 px-1">base: '/docucpp/',</code> to the <code className="bg-black/5 px-1">defineConfig</code> object.
                       </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                        <div className="bg-[#141414] text-white w-5 h-5 flex items-center justify-center text-[10px]">4</div>
+                        API Key Security
+                      </h3>
+                      <div className="text-xs opacity-70 space-y-2">
+                        <p>
+                          Keys generated in Google AI Studio are backed by a Google Cloud project. To restrict them:
+                        </p>
+                        <ol className="list-decimal pl-4 space-y-1">
+                          <li>Go to the <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer" className="underline font-bold">Google Cloud Console Credentials page</a>.</li>
+                          <li>Select the backing project (often named "Generative Language Client").</li>
+                          <li>Edit your API key.</li>
+                          <li>Select <strong>HTTP referrers (web sites)</strong>.</li>
+                          <li>Add <code className="bg-white/10 px-1 border border-[#141414]/20">https://nick-mcgill.github.io/docucpp/*</code> to the list.</li>
+                        </ol>
+                      </div>
                     </div>
                   </div>
 
