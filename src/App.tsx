@@ -21,7 +21,8 @@ import {
   FileCode,
   ChevronLeft,
   Search,
-  ExternalLink
+  ExternalLink,
+  Globe
 } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -303,6 +304,50 @@ jobs:
         with:
           name: documented-repo
           path: documented_repo.zip`;
+
+  const pagesWorkflowYaml = `name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: \${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./dist"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4`;
 
   return (
     <div className="min-h-screen bg-[#E4E3E0] text-[#141414] font-sans selection:bg-[#141414] selection:text-[#E4E3E0]">
@@ -749,6 +794,66 @@ jobs:
                       <li>Ensuring the runner has permissions to write to the repository if you want to commit back (optional).</li>
                       <li>Adjust the prompt in the script to match your desired documentation style.</li>
                     </ul>
+                  </div>
+                </div>
+              </section>
+
+              <section className="bg-white border border-[#141414] p-8 space-y-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <Globe size={24} />
+                  <h2 className="text-2xl font-bold tracking-tight uppercase">GitHub Pages Deployment</h2>
+                </div>
+                <p className="font-serif italic text-[#141414]/70">
+                  Host your own version of this app right from your GitHub repository using GitHub Pages. The build process automatically handles bundling and deploying your Vite React application to a static web server.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                        <div className="bg-[#141414] text-white w-5 h-5 flex items-center justify-center text-[10px]">1</div>
+                        Setup the Action
+                      </h3>
+                      <p className="text-xs opacity-70">
+                        Create a new file in your repository at <code className="bg-black/5 px-1">.github/workflows/deploy.yml</code> and paste the workflow configuration.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                        <div className="bg-[#141414] text-white w-5 h-5 flex items-center justify-center text-[10px]">2</div>
+                        Repository Settings
+                      </h3>
+                      <p className="text-xs opacity-70">
+                        Go to your repository settings on GitHub, navigate to "Pages" in the sidebar, and choose "GitHub Actions" as your build and deployment source.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                        <div className="bg-[#141414] text-white w-5 h-5 flex items-center justify-center text-[10px]">3</div>
+                        Vite Configuration
+                      </h3>
+                      <p className="text-xs opacity-70">
+                        If you are deploying to a non-custom domain (e.g., <code className="bg-black/5 px-1">user.github.io/repo/</code>), ensure you set the <code className="bg-black/5 px-1">base</code> option in your <code className="bg-black/5 px-1">vite.config.ts</code> so assets load correctly.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold text-[10px] uppercase tracking-widest opacity-60">Deploy YAML</h3>
+                      <button 
+                        onClick={() => handleCopy(pagesWorkflowYaml)}
+                        className="text-[10px] font-mono hover:underline uppercase flex items-center gap-1"
+                      >
+                       {copied ? <Check size={12} /> : <Copy size={12} />}
+                       {copied ? 'Copied' : 'Copy'}
+                      </button>
+                    </div>
+                    <div className="bg-[#151718] text-white p-4 overflow-auto text-[11px] h-[300px] border border-[#141414] font-mono">
+                      <pre><code>{pagesWorkflowYaml}</code></pre>
+                    </div>
                   </div>
                 </div>
               </section>
