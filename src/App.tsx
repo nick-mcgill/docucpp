@@ -358,7 +358,7 @@ jobs:
         run: npm ci
       - name: Build
         env:
-          VITE_GEMINI_API_KEY: "AIzaSyCgfyuctCJpYtZscG14V6TJXuu36mR7ju4"
+          VITE_GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
