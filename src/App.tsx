@@ -275,15 +275,15 @@ jobs:
   document:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           repository: \${{ github.event.inputs.repository }}
           ref: \${{ github.event.inputs.branch }}
       
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           
       - name: Install Dependencies
         run: npm install @google/genai glob
@@ -348,11 +348,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: "npm"
       - name: Install dependencies
         run: npm ci
@@ -361,14 +361,14 @@ jobs:
           VITE_GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
         run: npm run build
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4`;
+        uses: actions/deploy-pages@v5`;
 
   return (
     <div className="min-h-screen bg-[#E4E3E0] text-[#141414] font-sans selection:bg-[#141414] selection:text-[#E4E3E0]">
