@@ -837,6 +837,8 @@ jobs:
                       </h3>
                       <p className="text-xs opacity-70">
                         Go to your repository settings on GitHub, navigate to "Pages" in the sidebar, and choose "GitHub Actions" as your build and deployment source.
+                        <br/><br/>
+                        <span className="italic font-semibold">Note: If you see two different deploy actions running simultaneously when you push to main, it means your source is still set to "Deploy from a branch". Changing it to "GitHub Actions" stops the duplicate run.</span>
                       </p>
                     </div>
 
