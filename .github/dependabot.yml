@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # Enable security and version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    # Automatically approve and enable auto-merge for patch and minor updates
+    pull-request-branch-name:
+      separator: "/"
+    rebase-strategy: "auto"
+    # Group updates to reduce PR noise
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"
