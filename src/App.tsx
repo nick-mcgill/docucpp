@@ -373,7 +373,7 @@ jobs:
   return (
     <div className="min-h-screen bg-[#E4E3E0] text-[#141414] font-sans selection:bg-[#141414] selection:text-[#E4E3E0]">
       {/* Header */}
-      <header className="border-bottom border-[#141414] border-b p-6 flex justify-between items-center bg-[#E4E3E0] sticky top-0 z-50">
+      <header className="border-b border-[#141414] p-4 md:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#E4E3E0] sticky top-0 z-50">
         <div className="flex items-center gap-3">
           <div className="bg-[#141414] p-2 rounded-sm text-[#E4E3E0]">
             <Code2 size={24} />
@@ -383,11 +383,11 @@ jobs:
             <p className="font-serif italic text-xs opacity-60">High School Friendly Doxygen Generator</p>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2 md:gap-4 overflow-x-auto max-w-full pb-1 md:pb-0 w-full md:w-auto overflow-y-hidden snap-x">
           <button 
             onClick={() => setActiveTab('editor')}
             className={cn(
-              "px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all",
+              "whitespace-nowrap px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all snap-start",
               activeTab === 'editor' ? "bg-[#141414] text-[#E4E3E0]" : "hover:bg-white/50"
             )}
           >
@@ -396,7 +396,7 @@ jobs:
           <button 
             onClick={() => setActiveTab('repository')}
             className={cn(
-              "px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all",
+              "whitespace-nowrap px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all snap-start",
               activeTab === 'repository' ? "bg-[#141414] text-[#E4E3E0]" : "hover:bg-white/50"
             )}
           >
@@ -405,7 +405,7 @@ jobs:
           <button 
             onClick={() => setActiveTab('workflow')}
             className={cn(
-              "px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all",
+              "whitespace-nowrap px-4 py-2 text-xs font-mono uppercase tracking-widest transition-all snap-start",
               activeTab === 'workflow' ? "bg-[#141414] text-[#E4E3E0]" : "hover:bg-white/50"
             )}
           >
@@ -422,10 +422,10 @@ jobs:
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-180px)]"
+              className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:h-[calc(100vh-180px)]"
             >
               {/* Input Section */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 min-h-[400px] lg:min-h-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-[#141414]/60">
                     <Terminal size={16} />
@@ -437,14 +437,14 @@ jobs:
                   </div>
                 </div>
                 
-                <div className="relative flex-1 group">
+                <div className="relative flex-1 group flex flex-col">
                   <textarea
                     value={inputCode}
                     onChange={(e) => setInputCode(e.target.value)}
-                    className="w-full h-full bg-white border border-[#141414] p-6 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#141414]/10 transition-all placeholder:text-[#141414]/20"
+                    className="min-h-[50vh] lg:min-h-0 w-full flex-1 bg-white border border-[#141414] p-6 pb-20 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#141414]/10 transition-all placeholder:text-[#141414]/20"
                     placeholder="Paste your C++ code here..."
                   />
-                  <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-4 right-4 transition-opacity">
                     <button 
                       onClick={handleGenerate}
                       disabled={isGenerating}
@@ -462,7 +462,7 @@ jobs:
               </div>
 
               {/* Output Section */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 min-h-[400px] lg:min-h-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-[#141414]/60">
                     <Sparkles size={16} />
