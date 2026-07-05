@@ -1,0 +1,19 @@
+# .coderabbit.yaml
+language: "en-US"
+early_access: false
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: true
+  review_status: true
+  collapse_walkthrough: false
+  path_filters:
+    - "!**/*.lock"
+    - "!package-lock.json"
+    - "!dist/**"
+    - "!build/**"
+    - "!node_modules/**"
+    - "!.git/**"
+chat:
+  auto_reply: true
