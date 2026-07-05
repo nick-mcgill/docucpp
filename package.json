@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "validate-lockfile": "npm ci --dry-run --ignore-scripts"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
