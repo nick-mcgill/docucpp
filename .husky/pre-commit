@@ -1,0 +1,26 @@
+#!/bin/sh
+
+echo "🔍 Validating that package.json and package-lock.json are in sync..."
+
+# Run npm install with --package-lock-only to regenerate/update package-lock.json based on package.json
+# Redirecting stdout to /dev/null to keep hook output clean, but keeping stderr for potential issues
+if ! npm install --package-lock-only > /dev/null; then
+  echo ""
+  echo "❌ Error: Failed to run 'npm install --package-lock-only'. Please check that your package.json dependencies are valid."
+  echo ""
+  exit 1
+fi
+
+# Check if there are any changes in package-lock.json compared to the staged index
+if ! git diff --exit-code package-lock.json > /dev/null; then
+  echo ""
+  echo "❌ Error: package.json and package-lock.json are out of sync!"
+  echo "👉 Please run 'npm install' locally to regenerate 'package-lock.json' and stage both files before committing."
+  echo ""
+  # Revert changes to package-lock.json in the working directory to leave git clean
+  git checkout -- package-lock.json
+  exit 1
+fi
+
+echo "✅ package.json and package-lock.json are in sync!"
+

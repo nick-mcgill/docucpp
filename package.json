@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
@@ -31,7 +32,10 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.2",
+    "husky": "^9.1.7",
     "tailwindcss": "^4.3.2",
     "tsx": "^4.23.0",
     "typescript": "~6.0.3",
